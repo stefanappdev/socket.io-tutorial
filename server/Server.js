@@ -1,27 +1,57 @@
 const express=require('express');
+const socketIO=require('socket.io');
+const http=require('http');
 const path=require('path');
 const dotenv=require('dotenv');
-const Server=express();
-
+const app=express();
+const httpServer=http.createServer(app)
+let io=socketIO(httpServer);
 
 //configure nodejs to run env 
  dotenv.config();
 
 //set view enigine and set directories for html files
-Server.set('view engine','ejs');
-Server.set('views',path.join(__dirname,'../public/views'));
+app.set('view engine','ejs');
+app.set('views',path.join(__dirname,'../public/views'));
 
 
 let PORT=process.env.PORT||20000
 
 //set access to static public files
-Server.use(express.static('public'));
+app.use(express.static('public'));
 
-Server.get('/',(request,response)=>{
-        response.render('index');
+
+
+app.get('/',(request,response)=>{
+	
+	response.render('index');
 })
 
-Server.listen(PORT,()=>{
+app.get('/signup',(request,response)=>{
+	
+	response.render('signup');
+})
+
+
+//array to store list of new clients that connect to server
+let clients=[];
+//use httpServer to listen for connections
+io.on('connection',(socket)=>{
+	console.log("a new user has arrived");
+	clients.push(socket.id);
+	 
+	 //deals with user disconnect
+	 socket.on('disconnect', function() {
+        console.log('user'+socket.id+' was disconnected');
+	 let remaining_clients=clients.filter(usr=>usr.id!==socket.id);
+	  
+    });	
+})
+
+
+
+httpServer.listen(PORT,()=>{
 
     console.log(`listening on port ${PORT}`)
+	
 })
