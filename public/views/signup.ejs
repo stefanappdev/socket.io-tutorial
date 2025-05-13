@@ -20,9 +20,11 @@
 			</div>
 						<div id='registration-form-input-section'>
 							<label for='username'><strong>create a username: </strong></label>
-							<input type="text" placeholder="Enter your username" name='reg_username' id="reg_username"/>
+							<input type="text" placeholder="Enter a username" name='reg_username' id="reg_username" required/>
+							<label for='password'><strong>create a password: </strong></label>
+							<input type="text" placeholder="Enter a password" name='reg_password' id="reg_password" required/>
 						<br/>
-						<button id="submit-new-user-btn" name='submit-new-user-btn'>Submit</button>
+						<button type='submit' id="submit-new-user-btn" name='submit-new-user-btn'>Submit</button>
 						</div>
 						
 		</form>
@@ -33,6 +35,51 @@
 	
 </body>
 
+<script>
+            const regForm=document.getElementById('registration-form');
+		   regForm.addEventListener('submit',(event)=>{
+						event.preventDefault();
+						if(event.target.reg_username.value===""){
+								alert("Please enter a username to register");
+								return
+						}
+						
+						if(event.target.reg_password.value===""){
+								alert("Please enter a password to register");
+								return
+						}
+						
+						
+						
+						else{
+								 let newUser={ 
+											   username:event.target.reg_username.value,
+											   password:event.target.reg_password.value,
+										 };
+						
+						     if(localStorage.getItem('users')!==null){
+								
+								 let users= JSON.parse(localStorage.getItem('users'));
+								 localStorage.setItem('users',JSON.stringify([...users,newUser]));
+								 
 
+							
+							 }else{
+							 
+									localStorage.setItem('users',JSON.stringify( [newUser] ) );
+							 
+							 }
+							 
+								alert("Registration sucessful");
+						    		event.target.reg_username.value="";
+								 window.location.href="/";
+								 
+							
+						}
+		   })
+
+
+
+</script>
 
 </html>			

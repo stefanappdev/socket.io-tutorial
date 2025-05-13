@@ -1,0 +1,91 @@
+*{
+box-sizing:border-box;
+--moz-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+
+@media screen and (min-width:300px) and (max-width:500px) {
+body{
+
+	font-size:12px;
+}
+	
+
+
+#sidebar{
+		/*background-color:rgb(22, 162, 226);
+		grid-area:sidebar;*/
+		display:none;
+	}
+	
+	#chat_content{
+		/*background-color:rgb(80, 156, 82);
+		grid-area:chat_content;*/
+		display:none;
+	}
+	
+	
+	#login-form-input-section{
+			margin: 20px 35px 20px 35px;
+			height:400px;
+	}
+	
+	
+	#login-form{
+		display:flex;
+		align-items:center;
+		justify-content:center;
+		flex-direction:column;
+		width:250px;
+		height:200px;
+		border:collapse;
+		margin: 50px auto 50px auto;
+		background-color:rgb(251, 250, 250);
+		border-radius:2px;
+	}
+	
+	#login-form-background{
+	      background-color:rgb(2, 2, 2);
+		 height:500px;
+		 padding:20px;
+	}
+		#login-form-header{
+				background-color:rgb(255, 68, 55);
+				text-align:center;
+				color:white;
+				padding:15px;
+				font-weight:bold;
+				width:100%;
+				border-radius:2px;
+				height:200px;
+		}
+		
+		
+			input[type='text']{
+				margin: 10px 0 10px 0;
+			}
+			
+			input[type='text']:focus{
+				background-color:rgb(210, 236, 246);
+			}
+	
+	
+	
+	
+	#login-form #submit-btn{
+		 width:100px;
+		 height:25px;
+		 background-color:rgb(25, 96, 255);
+		 color:white;
+		 border-radius:2px;
+		 border-style:none;
+		 margin: 20px 0 20px 30px;
+	}
+	
+
+	
+	
+
+}

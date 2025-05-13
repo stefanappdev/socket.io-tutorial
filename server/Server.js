@@ -22,10 +22,14 @@ app.use(express.static('public'));
 
 
 
+
+
 app.get('/',(request,response)=>{
 	
 	response.render('index');
 })
+
+
 
 app.get('/signup',(request,response)=>{
 	

@@ -13,18 +13,53 @@
 <main >
 <div id='app'>
 
-
-
+		
+			<div id="login-form-background">
+				<form id="login-form"> 
+					<div id="login-form-header">
+							<span>Login here</span>
+					</div>
+					<div id='login-form-input-section'>
+									<label for='username'><strong>enter your username: </strong></label>
+									<input type="text" placeholder="Enter your username" name='login_username' id="login_username" required/>
+									<label for='password'><strong>enter your password: </strong></label>
+									<input type="text" placeholder="Enter a password" name='reg_password' id="reg_password" required/>
+								<br/>
+								<button type='submit' id="submit-btn" name='submit-btn'>Submit</button>
+					</div>
+						
+				</form>
+			
+			
+			</div>	
 			<div id='chat_content'>chat</div>
 			<div id='sidebar'>sidebar</div>
 	</div>
 </main>
-	<footer>Stefan mitchell 2025</footer>
+	
 </body>
 <script src='/socket.io/socket.io.js'></script>
 <script type="text/javascript">
+let socket=io();
 
-let socket=io()
+
+
+let isLoggedin=false;
+let loginformBackground=document.getElementById('login-form-background');
+let loginform=document.getElementById('login-form');
+
+
+loginform.addEventListener('submit',function(event){
+event.preventDefault();
+isLoggedin=true;
+loginformBackground.style.display="none";
+loginform.style.display='none';
+})
+
+
+
+
+
 
 </script>
 

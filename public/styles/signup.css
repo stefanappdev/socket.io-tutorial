@@ -15,17 +15,7 @@ body{
 	
 
 
-#sidebar{
-		/*background-color:rgb(22, 162, 226);
-		grid-area:sidebar;*/
-		display:none;
-	}
-	
-	#chat_content{
-		/*background-color:rgb(80, 156, 82);
-		grid-area:chat_content;*/
-		display:none;
-	}
+
 	
 	#signup-page{
 		
@@ -66,8 +56,10 @@ body{
 				height:200px;
 		}
 		
-		
-		#reg_username:focus{
+			input[type='text']{
+				margin: 10px 0 10px 0;
+			}
+		input[type='text']:focus{
 			background-color:rgb(210, 236, 246);
 		}
 	
