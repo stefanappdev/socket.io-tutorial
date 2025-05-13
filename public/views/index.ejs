@@ -17,15 +17,20 @@
 			<div id="login-form-background">
 				<form id="login-form"> 
 					<div id="login-form-header">
-							<span>Login here</span>
+							<div>
+								<span>Login here </span>
+							</div>
 					</div>
 					<div id='login-form-input-section'>
 									<label for='username'><strong>enter your username: </strong></label>
 									<input type="text" placeholder="Enter your username" name='login_username' id="login_username" required/>
 									<label for='password'><strong>enter your password: </strong></label>
-									<input type="text" placeholder="Enter a password" name='reg_password' id="reg_password" required/>
+									<input type="text" placeholder="Enter a password" name='login_password' id="login_password" required/>
 								<br/>
 								<button type='submit' id="submit-btn" name='submit-btn'>Submit</button>
+								<br>
+								<a class='signup-link' href='/signup'>signup instead?</a>
+								
 					</div>
 						
 				</form>
@@ -40,8 +45,10 @@
 </body>
 <script src='/socket.io/socket.io.js'></script>
 <script type="text/javascript">
-let socket=io();
 
+
+
+let socket=io();
 
 
 let isLoggedin=false;
@@ -51,9 +58,30 @@ let loginform=document.getElementById('login-form');
 
 loginform.addEventListener('submit',function(event){
 event.preventDefault();
-isLoggedin=true;
-loginformBackground.style.display="none";
-loginform.style.display='none';
+let target={
+  username:event.target.login_username.value,
+  password:event.target.login_password.value,
+  }
+   
+  function clientfunctions(){
+  socket.emit('login',{msg:"hello mr.Server"}) 
+  socket.on('from mr server',(data)=>{
+		console.log("from server:"+data.msg);
+	  })
+  }
+   
+  let currentUsers=JSON.parse(localStorage.getItem('users'))
+if (currentUsers.find(user=>user.username===target.username&&user.password===target.password)){
+  alert('login sucessful');
+	isLoggedin=true;
+	loginformBackground.style.display="none";
+	loginform.style.display='none';
+	clientfunctions();
+	}else{
+		alert("User not found!")
+		return
+	}
+
 })
 
 

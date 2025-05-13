@@ -50,6 +50,11 @@ io.on('connection',(socket)=>{
 	 let remaining_clients=clients.filter(usr=>usr.id!==socket.id);
 	  
     });	
+	
+	socket.on("login", (data)=>{
+		console.log("from client:",data.msg);
+	})
+	socket.emit('from mr server',{msg:'hey client,whats up?'})
 })
 
 
