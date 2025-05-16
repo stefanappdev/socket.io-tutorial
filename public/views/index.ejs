@@ -38,7 +38,7 @@
 			
 			
 			<div id="chatArea">
-			
+				
 			<div id='chat_content'></div>
 			
 			
@@ -72,72 +72,66 @@ let socket=io();
 
 
 let isLoggedin=false;
-let currentUser='';
 let loginformBackground=document.getElementById('login-form-background');
 let loginform=document.getElementById('login-form');
 let chat_content=document.getElementById('chat_content');
 let msgform=document.getElementById('message-box-form');
+let user_label=document.getElementById('user-label');
 
-
-
-
-
-
-
-
-function greetclient(){
-  socket.emit('login_success',{username:event.target.login_username.value, status:"success"}) 
-  socket.on('Login_msg',(data)=>{
-            chat_content.innerHTML+='<div>'+ data.greetmsg +'</div>'+'<br>';
-		currentUser=data.username;   
-	  })  
-
-  }
-  
-  
-loginform.addEventListener('submit',function(event){
-		event.preventDefault();
+///this function login in a new user to the chat server
+function loginClient(){
 		let target={
 		  username:event.target.login_username.value,
 		  password:event.target.login_password.value,
 		  }
-		  
-		  let currentUsers=JSON.parse(localStorage.getItem('users'))
-		if (currentUsers.find(user=>user.username===target.username&&user.password===target.password)){
-		  alert('login sucessful');
-		  
-			isLoggedin=true;
-			loginformBackground.style.display="none";
-			loginform.style.display='none';
-			
-			
-			
-			
-			greetclient();
+		let currentUsers=JSON.parse(localStorage.getItem('users'))
+		let userToLogin=currentUsers.find(user=>user.username===target.username&&user.password===target.password)
+		
+		if(userToLogin===null){
+			return
 			}else{
-				alert("User not found!")
-				return
+					alert('login sucessful');
+					isLoggedin=true;
+					loginformBackground.style.display="none";
+					loginform.style.display='none';
+					socket.emit('login_success',{username:userToLogin.username, status:"success"}) 
+					socket.on('Login_msg',(data)=>{
+					chat_content.innerHTML+='<div>'+ data.greetmsg +'</div>'+'<br>';			
+					//allows user to chat after successful login
+					accessChatServer(userToLogin)
+					})
 			}
-
+		
+	}
+  
+  
+loginform.addEventListener('submit',function(event){
+		event.preventDefault();
+		loginClient();
 		})
 
+function accessChatServer(user){
 
-msgform.addEventListener('submit',(event)=>{
+	let clientDetails={
+		cli_name:'',
+		cli_msg:"",
+		}
+		
+		
+	msgform.addEventListener('submit',(event)=>{
+		 event.preventDefault();
+		if(event.target.msg_input.value===''){
+			return
+		}
+		socket.emit('send_msg_req',{username:user.username,msg:event.target.msg_input.value});
+		socket.on('accept_req',(data)=>{
+				///NEED TO UPDATE USER INFO TO LOCAL STORAGE  
+		})
+		 chat_content.innerHTML+="<div>"+ clientDetails.cli_name+":"+clientDetails.cli_msg+"</div> <br/>"; 
+		 event.target.msg_input.value="";
+		})	
 
-     let msg=''
-     event.preventDefault();
-	if(event.target.msg_input.value===''){
-		return
-	}
-	socket.emit('send_msg_req',{msg:event.target.msg_input.value});
-	socket.on('accept_req',(data)=>{
-	  chat_content.innerHTML+="<div>"+data.cli_name+":"+data.cli_msg+"</div> <br/>";
-	 event.target.msg_input.value="";
-	
-	})
-	
-	
-	})	
+}
 
 
 
