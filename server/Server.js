@@ -51,12 +51,18 @@ io.on('connection',(socket)=>{
 	  
     });	
 	
-	socket.on("login", (data)=>{
-		console.log("from client:",data.msg);
-	})
-	socket.emit('from mr server',{msg:'hey client,whats up?'})
+	//deals with successful login 
+	socket.on("login_success", (data)=>{
+		let loggedInUser=data.username;
+	    io.emit('Login_msg',{username:loggedInUser,greetmsg:loggedInUser+' has joined the server'})
+	
+	//deals with client request to send messages
+		socket.on('send_msg_req',(data)=>{
+		io.emit('accept_req',{cli_msg:data.msg,cli_name:loggedInUser})
+	});
+})	  	
+	
 })
-
 
 
 httpServer.listen(PORT,()=>{

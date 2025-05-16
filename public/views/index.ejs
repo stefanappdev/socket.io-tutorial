@@ -25,7 +25,7 @@
 									<label for='username'><strong>enter your username: </strong></label>
 									<input type="text" placeholder="Enter your username" name='login_username' id="login_username" required/>
 									<label for='password'><strong>enter your password: </strong></label>
-									<input type="text" placeholder="Enter a password" name='login_password' id="login_password" required/>
+									<input type="password" placeholder="Enter a password" name='login_password' id="login_password" required/>
 								<br/>
 								<button type='submit' id="submit-btn" name='submit-btn'>Submit</button>
 								<br>
@@ -34,11 +34,31 @@
 					</div>
 						
 				</form>
-			
-			
 			</div>	
-			<div id='chat_content'>chat</div>
-			<div id='sidebar'>sidebar</div>
+			
+			
+			<div id="chatArea">
+			
+			<div id='chat_content'></div>
+			
+			
+			<div id='message-box'>
+						<h2 id='message-box-header'>Send a message</h2>
+							<form id='message-box-form'>
+								<div class='inline' id="message-box-submit-container">
+									<input placeholder='enter a message' id="msg_input" name="msg_input" type='text' />
+									<button type="submit" id='message-box-form-submit-btn'>Submit</button>
+								</div>
+									
+							</form>
+				
+			</div>
+			
+			
+			</div>
+			
+			
+			
 	</div>
 </main>
 	
@@ -52,37 +72,75 @@ let socket=io();
 
 
 let isLoggedin=false;
+let currentUser='';
 let loginformBackground=document.getElementById('login-form-background');
 let loginform=document.getElementById('login-form');
+let chat_content=document.getElementById('chat_content');
+let msgform=document.getElementById('message-box-form');
 
 
+
+
+
+
+
+
+function greetclient(){
+  socket.emit('login_success',{username:event.target.login_username.value, status:"success"}) 
+  socket.on('Login_msg',(data)=>{
+            chat_content.innerHTML+='<div>'+ data.greetmsg +'</div>'+'<br>';
+		currentUser=data.username;   
+	  })  
+
+  }
+  
+  
 loginform.addEventListener('submit',function(event){
-event.preventDefault();
-let target={
-  username:event.target.login_username.value,
-  password:event.target.login_password.value,
-  }
-   
-  function clientfunctions(){
-  socket.emit('login',{msg:"hello mr.Server"}) 
-  socket.on('from mr server',(data)=>{
-		console.log("from server:"+data.msg);
-	  })
-  }
-   
-  let currentUsers=JSON.parse(localStorage.getItem('users'))
-if (currentUsers.find(user=>user.username===target.username&&user.password===target.password)){
-  alert('login sucessful');
-	isLoggedin=true;
-	loginformBackground.style.display="none";
-	loginform.style.display='none';
-	clientfunctions();
-	}else{
-		alert("User not found!")
+		event.preventDefault();
+		let target={
+		  username:event.target.login_username.value,
+		  password:event.target.login_password.value,
+		  }
+		  
+		  let currentUsers=JSON.parse(localStorage.getItem('users'))
+		if (currentUsers.find(user=>user.username===target.username&&user.password===target.password)){
+		  alert('login sucessful');
+		  
+			isLoggedin=true;
+			loginformBackground.style.display="none";
+			loginform.style.display='none';
+			
+			
+			
+			
+			greetclient();
+			}else{
+				alert("User not found!")
+				return
+			}
+
+		})
+
+
+msgform.addEventListener('submit',(event)=>{
+
+     let msg=''
+     event.preventDefault();
+	if(event.target.msg_input.value===''){
 		return
 	}
+	socket.emit('send_msg_req',{msg:event.target.msg_input.value});
+	socket.on('accept_req',(data)=>{
+	  chat_content.innerHTML+="<div>"+data.cli_name+":"+data.cli_msg+"</div> <br/>";
+	 event.target.msg_input.value="";
+	
+	})
+	
+	
+	})	
 
-})
+
+
 
 
 
