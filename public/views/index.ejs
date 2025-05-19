@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/styles/index.css" type='text/css' rel="stylesheet">
-    <title>express Chat app</title>
+    <title>Login page</title>
 </head>
 
 
 <body>
 
-<main >
-<div id='app'>
+<div id='login-page'>
 
 		
 			<div id="login-form-background">
@@ -35,112 +34,52 @@
 						
 				</form>
 			</div>	
-			
-			
-			<div id="chatArea">
-				
-			<div id='chat_content'></div>
-			
-			
-			<div id='message-box'>
-						<h2 id='message-box-header'>Send a message</h2>
-							<form id='message-box-form'>
-								<div class='inline' id="message-box-submit-container">
-									<input placeholder='enter a message' id="msg_input" name="msg_input" type='text' />
-									<button type="submit" id='message-box-form-submit-btn'>Submit</button>
-								</div>
-									
-							</form>
-				
-			</div>
-			
-			
-			</div>
-			
-			
-			
-	</div>
-</main>
-	
-</body>
-<script src='/socket.io/socket.io.js'></script>
+</div>			
+
+
 <script type="text/javascript">
-
-
-
-let socket=io();
-
 
 let isLoggedin=false;
 let loginformBackground=document.getElementById('login-form-background');
 let loginform=document.getElementById('login-form');
-let chat_content=document.getElementById('chat_content');
-let msgform=document.getElementById('message-box-form');
-let user_label=document.getElementById('user-label');
 
-///this function login in a new user to the chat server
+//function for login of client
 function loginClient(){
 		let target={
 		  username:event.target.login_username.value,
 		  password:event.target.login_password.value,
 		  }
-		let currentUsers=JSON.parse(localStorage.getItem('users'))
-		let userToLogin=currentUsers.find(user=>user.username===target.username&&user.password===target.password)
+		  
+		  //find user who is logging in
+		let allUsers=JSON.parse(localStorage.getItem('allUsers'))
+		let currentUsers=JSON.parse(localStorage.getItem('currentUsers'));
+		let userToLogin=allUsers.find(user=>user.username===target.username&&user.password===target.password)
 		
-		if(userToLogin===null){
-			return
-			}else{
-					alert('login sucessful');
+		if(userToLogin){
+		   
+					alert('login successful');
 					isLoggedin=true;
-					loginformBackground.style.display="none";
-					loginform.style.display='none';
-					socket.emit('login_success',{username:userToLogin.username, status:"success"}) 
-					socket.on('Login_msg',(data)=>{
-					chat_content.innerHTML+='<div>'+ data.greetmsg +'</div>'+'<br>';			
-					//allows user to chat after successful login
-					accessChatServer(userToLogin)
-					})
+					if(currentUsers===null){
+						localStorage.setItem('currentUsers',JSON.stringify([userToLogin]))
+					}else{
+						localStorage.setItem('currentUsers',JSON.stringify([...currentUsers,userToLogin]))
+					}
+				    event.target.login_username.value='';
+					event.target.login_password.value='';
+					window.location.href='/chat';
+					
+			}else{
+					alert('login unsuccessful,try again or signup to register');
+					return
 			}
 		
 	}
   
-  
-loginform.addEventListener('submit',function(event){
+  loginform.addEventListener('submit',function(event){
 		event.preventDefault();
 		loginClient();
 		})
 
-function accessChatServer(user){
-
-	let clientDetails={
-		cli_name:'',
-		cli_msg:"",
-		}
-		
-		
-	msgform.addEventListener('submit',(event)=>{
-		 event.preventDefault();
-		if(event.target.msg_input.value===''){
-			return
-		}
-		socket.emit('send_msg_req',{username:user.username,msg:event.target.msg_input.value});
-		socket.on('accept_req',(data)=>{
-				///NEED TO UPDATE USER INFO TO LOCAL STORAGE  
-		})
-		 chat_content.innerHTML+="<div>"+ clientDetails.cli_name+":"+clientDetails.cli_msg+"</div> <br/>"; 
-		 event.target.msg_input.value="";
-		})	
-
-}
-
-
-
-
-
-
-
 
 
 </script>
-
-</html>

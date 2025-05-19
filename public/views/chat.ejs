@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/styles/chat.css" type='text/css' rel="stylesheet">
+    <title>express Chat app</title>
+</head>
+
+
+<body>
+
+<main >
+<div id='app'>
+
+		
+			
+			
+			<div id="chatArea">
+			<span id='user-label'></span>
+				<div id='chat_content'></div>
+				
+				
+				<div id='message-box'>
+							<h2 id='message-box-header'>Send a message</h2>
+								<form id='message-box-form'>
+									<div class='inline' id="message-box-submit-container">
+										<input placeholder='enter a message' id="msg_input" name="msg_input" type='text' />
+										<button type="submit" id='message-box-form-submit-btn'>Submit</button>
+									</div>
+										
+								</form>
+					
+				</div>
+				
+			
+			</div>
+			
+			
+			
+	</div>
+</main>
+	
+</body>
+<script src='/socket.io/socket.io.js'></script>
+<script type="text/javascript">
+
+
+
+let socket=io();
+let chat_content=document.getElementById('chat_content');
+let msgform=document.getElementById('message-box-form');
+let user_label=document.getElementById('user-label');
+let currentUsers=JSON.parse(localStorage.getItem('currentUsers'))
+let activeUser=currentUsers[currentUsers.length - 1];
+  
+
+function accessChatServer(user){
+		if(user===null){
+			window.location.href='/login';
+		}
+		
+		socket.emit('login_success',{username:user.username,status:"success"})
+		socket.on('Login_msg', data=>{
+			chat_content.innerHTML+="<div>"+ data.username+":"+data.greetmsg+" has entered  the chat"+"</div> "; 
+		})
+      //grabs username of use and puts it in user label
+	    user_label.textContent=user.username+"(you)";
+		
+		msgform.addEventListener('submit',(event)=>{
+		 event.preventDefault();
+		if(event.target.msg_input.value===''){
+			return
+		}
+
+		socket.emit('send_msg_req',{user:user.username,msg:event.target.msg_input.value});
+		socket.on('accept_req',(data)=>{
+				//this part sends messages to clients
+					
+					chat_content.innerHTML+="<div>"+ data.username+":"+data.msg+"</div> "; 
+					event.target.msg_input.value="";
+			})
+		
+		
+	})	
+	
+
+}
+
+accessChatServer(activeUser)
+
+
+
+
+
+
+
+</script>
+
+</html>

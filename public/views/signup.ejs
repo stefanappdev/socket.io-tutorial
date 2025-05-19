@@ -58,19 +58,19 @@
 								 let newUser={ 
 											   username:event.target.reg_username.value,
 											   password:event.target.reg_password.value,
-											   messages:[];
+					
 										 };
 						
-						     if(localStorage.getItem('users')!==null){
+						     if(localStorage.getItem('allUsers')!==null){
 								
-								 let users= JSON.parse(localStorage.getItem('users'));
-								 localStorage.setItem('users',JSON.stringify([...users,newUser]));
+								 let allUsers= JSON.parse(localStorage.getItem('allUsers'));
+								 localStorage.setItem('allUsers',JSON.stringify([...allUsers,newUser]));
 								 
 
 							
 							 }else{
 							 
-									localStorage.setItem('users',JSON.stringify( [newUser] ) );
+									localStorage.setItem('allUsers',JSON.stringify( [newUser] ) );
 							 
 							 }
 							 

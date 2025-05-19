@@ -24,16 +24,20 @@ app.use(express.static('public'));
 
 
 
-app.get('/',(request,response)=>{
+app.get('/login',(request,response)=>{
 	
-	response.render('index');
+	response.render('index.ejs');
 })
 
+app.get('/chat',(request,response)=>{
+	
+	response.render('chat.ejs');
+})
 
 
 app.get('/signup',(request,response)=>{
 	
-	response.render('signup');
+	response.render('signup.ejs');
 })
 
 
@@ -55,16 +59,14 @@ io.on('connection',(socket)=>{
 	socket.on("login_success", (data)=>{
 		if(data.status==='success'){
 		let loggedInUser=data.username;
-	    io.emit('Login_msg',{username:loggedInUser,greetmsg:loggedInUser+' has joined the server'})
-		
-		//deals with client request to send messages
-			socket.on('send_msg_req',(data)=>{
-			io.emit('accept_req',{msg:data.msg,name:data.username})
-			});
+	    io.emit('Login_msg',{username:loggedInUser,greetmsg:loggedInUser})
 		}	  	
 	})	
 	
-	
+	//deals with client request to send messages
+			socket.on('send_msg_req',(data)=>{
+			io.emit('accept_req',{msg:data.msg,username:data.user})
+			});
 })
 
 

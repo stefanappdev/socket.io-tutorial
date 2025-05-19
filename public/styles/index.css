@@ -19,60 +19,6 @@ body{
 }
 	
 
-#message-box{
-		background-color:#F2F2F2;
-		height:100px;
-		padding:50px;
-		width:100%;
-		display:flex;
-		flex-direction:column;
-		align-items:center;
-		justify-content:center;
-	}
-	
-	#message-box-form{
-		margin:10px auto 10px auto;
-		padding:5px;
-	
-	}
-	
-	#message-box-header{
-		text-align:center;
-	}
-	
-	#app{
-		
-		height: 500px;
-	}
-	#message-box-form-submit-btn{
-		 width:50px;
-		 height:25px;
-		 background-color:rgb(25, 96, 255);
-		 color:white;
-		 border-radius:2px;
-		 border-style:none;
-	}
-	
-	
-	#chat_content{
-		background-color:rgb(80, 156, 82);
-		width:50%;
-		height:350px;
-		margin:0 auto 0 auto;
-		overflow-y:scroll;
-		text-align:center;
-	}
-	
-	#chatArea{
-		width:100%;
-		display:flex;
-		flex-direction:column;
-		align-items:center;
-		justify-content:center;
-		height:500px;
-		
-	}
-	
 	#login-form-input-section{
 			margin: 20px 35px 20px 35px;
 			height:400px;
@@ -105,19 +51,19 @@ body{
 	#login-form-background{
 	      background-color:rgb(2, 2, 2);
 		 height:1000px;
-		 width:800px;
+		 width:100%;
 		 padding:20px;
-		 position:absolute;
 	}
 		#login-form-header{
 				background-color:rgb(255, 68, 55);
 				text-align:center;
 				color:white;
 				padding:15px;
-				font-weight:bold;
+				font-size:20px;
+				font-weight:bolder;
 				width:100%;
 				border-radius:2px;
-				height:180px;
+				height:120px;
 		}
 		
 		
@@ -153,60 +99,6 @@ body{
 }
 	
 
-#message-box{
-		background-color:#F2F2F2;
-		height:100px;
-		padding:50px;
-		width:100%;
-		display:flex;
-		flex-direction:column;
-		align-items:center;
-		justify-content:center;
-	}
-	
-	#message-box-form{
-		margin:10px auto 10px auto;
-		padding:5px;
-	
-	}
-	
-	#message-box-header{
-		text-align:center;
-	}
-	
-	#app{
-		
-		height: 500px;
-	}
-	#message-box-form-submit-btn{
-		 width:50px;
-		 height:25px;
-		 background-color:rgb(25, 96, 255);
-		 color:white;
-		 border-radius:2px;
-		 border-style:none;
-	}
-	
-	
-	#chat_content{
-		background-color:rgb(80, 156, 82);
-		padding:10px;
-		width:50%;
-		height:350px;
-		overflow-y:scroll;
-		margin-left:auto;
-		margin-right:auto;
-	}
-	
-	#chatArea{
-		width:100%;
-		display:flex;
-		flex-direction:column;
-		align-items:center;
-		justify-content:center;
-		height:500px;
-		
-	}
 	
 	#login-form-input-section{
 			margin: 20px 35px 20px 35px;
@@ -219,7 +111,8 @@ body{
 	text-align:center;
 	text-decoration:underline;
 	color:rgb(1, 87, 190);
-	font-weight:bold;
+	font-weight:bolder;
+	font-size:16px;
 	cursor:pointer;
 	}
 	
@@ -240,20 +133,21 @@ body{
 	#login-form-background{
 	      background-color:rgb(2, 2, 2);
 		 height:1000px;
-		 width:800px;
+		 width:100%;
 		 padding:20px;
-		 position:absolute;
 	}
 		#login-form-header{
 				background-color:rgb(255, 68, 55);
 				text-align:center;
 				color:white;
 				padding:15px;
-				font-weight:bold;
+				font-size:20px;
+				font-weight:bolder;
 				width:100%;
 				border-radius:2px;
-				height:180px;
+				height:120px;
 		}
+		
 		
 		
 			input[type='text']{
