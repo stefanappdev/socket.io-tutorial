@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/styles/index.css" type='text/css' rel="stylesheet">
-    <title>Login page</title>
+    <title><%= title %></title>
 </head>
 
 
@@ -45,41 +45,51 @@ let loginform=document.getElementById('login-form');
 
 //function for login of client
 function loginClient(){
-		let target={
-		  username:event.target.login_username.value,
-		  password:event.target.login_password.value,
-		  }
-		  
-		  //find user who is logging in
-		let allUsers=JSON.parse(localStorage.getItem('allUsers'))
-		let currentUsers=JSON.parse(localStorage.getItem('currentUsers'));
-		let userToLogin=allUsers.find(user=>user.username===target.username&&user.password===target.password)
-		
-		if(userToLogin){
-		   
-					alert('login successful');
-					isLoggedin=true;
-					if(currentUsers===null){
-						localStorage.setItem('currentUsers',JSON.stringify([userToLogin]))
-					}else{
-						localStorage.setItem('currentUsers',JSON.stringify([...currentUsers,userToLogin]))
-					}
-				    event.target.login_username.value='';
-					event.target.login_password.value='';
-					window.location.href='/chat';
-					
-			}else{
-					alert('login unsuccessful,try again or signup to register');
-					return
-			}
-		
+			let target={
+			  username:event.target.login_username.value,
+			  password:event.target.login_password.value,
+			  }
+			  
+			  //find user who is logging in
+			  //function to fetch all users
+			  
+			try{
+			  let fetchUsers=async( )=>await fetch('/users') 
+				fetchUsers().then(response=>response.json())
+			      .then(users=>{
+				console.log(users)
+				users.map(user=>{
+				if(user.username===target.username&&user.password===target.password){
+				
+						alert('login successful');
+						isLoggedin=true;
+						event.target.login_username.value='';
+						event.target.login_password.value='';
+						
+						setTimeout(()=>{
+						window.location.href='/menu';
+						},2000);
+				}else{
+						alert('login unsuccessful,try again or signup to register');
+						return
+				}
+				})
+			})	
+				}catch(error){
+					alert("Error:",error);
+				}
+				
 	}
   
   loginform.addEventListener('submit',function(event){
 		event.preventDefault();
+	
 		loginClient();
-		})
+		
 
-
+})
 
 </script>
+
+
+</html>

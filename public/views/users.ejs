@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title> <%= title %> </title>
+</head>
+
+<body>
+
+ <% users.map(function(user){ %>
+    <div>
+	    <div>username: <%=user.username%></div>
+		
+		<div>password: <%=user.password%></div>
+		
+		 <div>id: <%=user._id%></div>
+	</div>
+	<br/>
+  <% })%>
+</body>
+
+
+</html>

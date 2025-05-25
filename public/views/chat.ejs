@@ -60,31 +60,41 @@ function accessChatServer(user){
 			window.location.href='/login';
 		}
 		
+		
+		socket.on('disconnect_msg',data=>{
+				chat_content.innerHTML+=data.msg;
+				window.location.href='/'
+		})
+		
 		socket.emit('login_success',{username:user.username,status:"success"})
 		socket.on('Login_msg', data=>{
-			chat_content.innerHTML+="<div>"+ data.username+":"+data.greetmsg+" has entered  the chat"+"</div> "; 
+		
+			chat_content.innerHTML+="<div>"+data.username+" has entered  the chat"+"</div> "; 
+			
+			
 		})
-      //grabs username of use and puts it in user label
-	    user_label.textContent=user.username+"(you)";
+		
 		
 		msgform.addEventListener('submit',(event)=>{
-		 event.preventDefault();
-		if(event.target.msg_input.value===''){
-			return
-		}
+				 event.preventDefault();
+				if(event.target.msg_input.value===''){
+					return
+				}
 
-		socket.emit('send_msg_req',{user:user.username,msg:event.target.msg_input.value});
-		socket.on('accept_req',(data)=>{
-				//this part sends messages to clients
-					
-					chat_content.innerHTML+="<div>"+ data.username+":"+data.msg+"</div> "; 
-					event.target.msg_input.value="";
-			})
-		
-		
-	})	
-	
+				socket.emit('send_msg_req',{user:user.username,msg:event.target.msg_input.value});
+				
+				event.target.msg_input.value="";
+			})	
+			
+			socket.on('send_msg_req',(data)=>{
+			               let youLabel=data.user===user.username?"(you)":" ";
+						
+						//this part sends messages to clients
+							chat_content.innerHTML+="<div>"+data.user+youLabel+":"+data.msg+"</div> "; 
 
+						
+					})
+		
 }
 
 accessChatServer(activeUser)

@@ -19,11 +19,11 @@
 					<span>Sign up to Start</span>
 			</div>
 						<div id='registration-form-input-section'>
-							<label for='username'><strong>create a username: </strong></label>
+							<label for='reg_username'><strong>create a username: </strong></label>
 							<input type="text" placeholder="Enter a username" name='reg_username' id="reg_username" required/>
 							<br/>
-							<label for='password'><strong>create a password: </strong></label>
-							<input type="text" placeholder="Enter a password" name='reg_password' id="reg_password" required/>
+							<label for='reg_password'><strong>create a password: </strong></label>
+							<input type="password" placeholder="Enter a password" name='reg_password' id="reg_password" required/>
 							<br/>
 						<button type='submit' id="submit-new-user-btn" name='submit-new-user-btn'>Submit</button>
 							<br/>
@@ -52,33 +52,35 @@
 								return
 						}
 						
-						
-						
-						else{
-								 let newUser={ 
-											   username:event.target.reg_username.value,
-											   password:event.target.reg_password.value,
 					
-										 };
+						else{
+									 let newUser={ 
+												   username:event.target.reg_username.value,
+												   password:event.target.reg_password.value,
 						
-						     if(localStorage.getItem('allUsers')!==null){
-								
-								 let allUsers= JSON.parse(localStorage.getItem('allUsers'));
-								 localStorage.setItem('allUsers',JSON.stringify([...allUsers,newUser]));
-								 
-
+											 }
+											 
+											 
+									  fetch("/users",{
+										method: 'POST',
+										headers:{
+											
+											'Content-type': 'application/json',
+										},
+										 body:JSON.stringify(newUser),
+									  })
+								.then(response=>response.json( ))
+								.then(data=>{
+								      
+									 alert("Signup sucessful")
+									 event.target.reg_password.value="";
+									 event.target.reg_username.value="";
+									 window.location.href=data.redirect;
+							})
 							
-							 }else{
-							 
-									localStorage.setItem('allUsers',JSON.stringify( [newUser] ) );
-							 
-							 }
-							 
-								alert("Registration sucessful");
-						    		event.target.reg_username.value="";
-								 window.location.href="/";
-								 
-							
+							.catch(error=>{
+								alert('error:',error);
+							})
 						}
 		   })
 
